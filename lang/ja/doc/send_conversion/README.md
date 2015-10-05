@@ -17,7 +17,7 @@ sendConversionは、特に理由がない限りはアプリケーションの起
 成果通知のコードを追加
 
 ```cpp
-	FoxPlugin::sendConversion(“default”);
+	FoxPlugin::sendConversion("default");
 ```
 
 sendConversionの引数には、通常は上記の通り"default"という文字列を入力してください。デフォルトでは標準で用意されたページが表示されますが、遷移先のURLをF.O.X管理画面上で任意に設定することが可能です。

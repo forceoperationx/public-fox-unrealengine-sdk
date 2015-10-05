@@ -20,9 +20,6 @@ F.O.X SDK를 앱에 도입함으로써 아래와 같은 기능을 제공합니�
 
 자연 유입과 광고 유입의 설치 비교, 앱의 기동수, 유니크 사용자수(DAU/MAU), 지속률 등을 측정 할 수 있습니다.
 
-* **푸시 알림**
-
-F.O.X에서 측정된 정보를 사용하여 사용자에게 푸시 알림을 할 수 있습니다. 예를 들어 특정 광고에서 유입된 사용자에게 메시지를 보낼 수 있습니다.
 
 # 1. 개요
 
@@ -59,18 +56,18 @@ Source 폴더 내에 파일은 이하와 같습니다.
 FoxUePlugin.h|필수|헤더 파일. UE의 C++상에서 SDK를 사용하기 위한 래퍼.
 FoxUePlugin.mm|	iOS 전용	|라이브러리 파일. UE의 C++에서 FOX iOS SDK를 사용하기 위한 iOS용 래퍼.
 FoxUePlugin.cpp|Android 전용|라이브러리 파일. UE의 C++에서 FOX Android SDK를 사용하기 위한 Android용 래퍼.
-FoxUIApplication.h|iOS 전용<br>필수|헤더 파일. UE의 C++에서 번들 버전을 제어하기 위한 래퍼.
-FoxUIApplication.m|iOS 전용<br>필수|라이브러리 파일. UE의 C++에서 번들 버전을 제어하기 위한 래퍼.
+FoxUIApplication.h|iOS 전용<br>필수|헤더 파일. UE의 C++에서 재반응 유도(Re-engagement) 계측 기능을 유효화하기 위한 iOS의 openURL 메소드를 오버라이드한 래퍼.
+FoxUIApplication.m|iOS 전용<br>필수|라이브러리 파일. UE의 C++에서 재반응 유도(Re-engagement) 계측 기능을 유효화하기 위한 iOS의 openURL 메소드를 오버라이드한 래퍼.
 
 iOS의 네이티브 SDK는 `ThirdParty/FoxSDK/iOS` 폴더에 들어 있습니다.
 
 파일명|필수|개요
 :--------:|:-------------:|:--------
+FoxSDK.Build.cs|필수|iOS의 계측용 라이브러리 파일을 읽기 위한 설정 파일.
 AdManager.h|필수|헤더 파일. 광고의 효과를 측정.
 libAppAdForce.a|필수|라이브러리 파일. 광고의 효과를 측정.
 Ltv.h|옵션|헤더 파일. LTV를 측정.
 AnalyticsManager.h|옵션|헤더 파일. 액세스를 해석.
-Notify.h|옵션|헤더 파일. Push 통지.
 
 Android의 네이티브 SDK는 `Intermediate/Android/APK/libs` 폴더에 들어 있습니다.
 
@@ -368,7 +365,7 @@ LTV측정에 의해 광고 유입별 과금 금액 및 가입 횟수 등을 측�
 #### [iOS의 경우]
 iOS의 경우 아래와 같은 설정이 필요합니다.
 
-앱 기동 지점의 applicationDidFinishLaunching 및 applicationWillEnterForeground 모두 아래와 같이 설명합니다.
+앱 기동 지점에 아래와 같이 코딩해 주십시오.
 
 ・헤더 파일 include
 

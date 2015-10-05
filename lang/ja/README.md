@@ -20,10 +20,6 @@ F.O.X SDKをアプリケーションに導入することで、以下の機能�
 
 自然流入と広告流入のインストール比較。アプリケーションの起動数やユニークユーザー数(DAU/MAU)。継続率等を計測することができます。
 
-* **プッシュ通知**
-
-F.O.Xで計測された情報を使い、ユーザーに対してプッシュ通知を行うことができます。例えば、特定の広告から流入したユーザーに対してメッセージを送ることができます。
-
 # 1.	概要
 
 本ドキュメントでは、Force Operation X UnrealEngine(以下、UE) SDK プラグインの導入手順について説明します。Force Operation X UE SDKプラグインはiOSおよびAndroidに対応しています。
@@ -56,18 +52,17 @@ Sourceフォルダ内に同梱されているファイルは以下の通りで�
 :--------:|:-------------:|:--------
 FoxUePlugin.h|必須|ヘッダファイル。UEのC++上からSDKを使用するためのラッパー
 FoxUePlugin.mm|	iOS専用	|ライブラリファイル。UEのC++からFOX iOS SDKを使用するためのiOS用のラッパー
-FoxUePlugin.cpp|Android専用|ライブラリファイル。UEのC++からFOX Android SDKを使用するためのAndroid用のラッパーFoxUIApplication.h|iOS専用<br>必須|ヘッダファイル。UE上のC++からバンドルバージョンを制御するラッパー
-FoxUIApplication.m|iOS専用<br>必須|ライブラリファイル。UE上のC++からバンドルバージョンを制御するラッパー|
-
+FoxUePlugin.cpp|Android専用|ライブラリファイル。UEのC++からFOX Android SDKを使用するためのAndroid用のラッパーFoxUIApplication.h|iOS専用<br>必須|ヘッダファイル。UE上のC++からリエンゲージメント計測機能を有効にするためiOSのopenURLメソッドをoverrideするラッパー
+FoxUIApplication.m|iOS専用<br>必須|ライブラリファイル。UE上のC++からリエンゲージメント計測機能を有効にするためiOSのopenURLメソッドをoverrideするラッパー|
 iOSのネイティブSDKは`ThirdParty/FoxSDK/iOS`フォルダに同梱されています。
 
 ファイル名|必須|概要
 :--------:|:-------------:|:--------
+FoxSDK.Build.cs|必須|iOSの計測用ライブラリファイルを読み込むための設定ファイル。
 AdManager.h|必須|ヘッダファイル。広告の効果測定を行う。
 libAppAdForce.a|必須|ライブラリファイル。広告の効果測定を行う。
 Ltv.h|オプション|ヘッダファイル。LTV計測を行う。
 AnalyticsManager.h|オプション|ヘッダファイル。アクセス解析を行う。
-Notify.h|オプション|ヘッダファイル。Push通知を行う。
 
 
  AndroidのネイティブSDKは`Intermediate/Android/APK/libs`フォルダに同梱されています。
@@ -331,7 +326,7 @@ LTV計測により、広告流入別の課金金額や入会数などを計測�
 ### [iOSの場合]
 iOSの場合、以下の設定が必要です。
 
-アプリ起動地点のapplicationDidFinishLaunchingおよびapplicationWillEnterForegroundの両方に、以下のように記述してください。
+アプリ起動地点となる箇所に、次の実装をしてください。
 
 ・ヘッダをインクルード
 
@@ -359,7 +354,7 @@ import jp.appAdForce.android.AnalyticsManager;
 public class GameActivity extends NativeActivity {	@Override	protected void onResume() {		super.onResume();		AnalyticsManager.sendStartSession(this);	}}
 ```
 
-#### ＜JavaのActivity上でonResume()が使えない場合＞
+#### ＜もしJavaのActivity上でonResume()が使えない場合＞
 
 アプリ起動の起点となる箇所で以下のコードを実行します。
 
