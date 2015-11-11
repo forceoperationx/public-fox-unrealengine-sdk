@@ -1,4 +1,4 @@
-# Force Opetaion X UnrealEngine SDK Integration Guide
+# Force Operation X UnrealEngine SDK Integration Guide
 
 ###LANGUAGE
 * [Japanese](./lang/ja/)
