@@ -1,4 +1,4 @@
-# Force Opetaion Xとは
+# Force Operation Xとは
 
 Force Operation X (以下F.O.X)は、スマートフォンにおける広告効果最適化のためのトータルソリューションプラットフォームです。アプリケーションのダウンロード、ウェブ上でのユーザーアクションの計測はもちろん、スマートフォンユーザーの行動特性に基づいた独自の効果計測基準の元、企業のプロモーションにおける費用対効果を最大化することができます。
 
@@ -52,7 +52,8 @@ Sourceフォルダ内に同梱されているファイルは以下の通りで�
 :--------:|:-------------:|:--------
 FoxUePlugin.h|必須|ヘッダファイル。UEのC++上からSDKを使用するためのラッパー
 FoxUePlugin.mm|	iOS専用	|ライブラリファイル。UEのC++からFOX iOS SDKを使用するためのiOS用のラッパー
-FoxUePlugin.cpp|Android専用|ライブラリファイル。UEのC++からFOX Android SDKを使用するためのAndroid用のラッパーFoxUIApplication.h|iOS専用<br>必須|ヘッダファイル。UE上のC++からリエンゲージメント計測機能を有効にするためiOSのopenURLメソッドをoverrideするラッパー
+FoxUePlugin.cpp|Android専用|ライブラリファイル。UEのC++からFOX Android SDKを使用するためのAndroid用のラッパー
+FoxUIApplication.h|iOS専用<br>必須|ヘッダファイル。UE上のC++からリエンゲージメント計測機能を有効にするためiOSのopenURLメソッドをoverrideするラッパー
 FoxUIApplication.m|iOS専用<br>必須|ライブラリファイル。UE上のC++からリエンゲージメント計測機能を有効にするためiOSのopenURLメソッドをoverrideするラッパー|
 iOSのネイティブSDKは`ThirdParty/FoxSDK/iOS`フォルダに同梱されています。
 
@@ -215,7 +216,9 @@ Force Operation X SDKの実行に必要な情報をapplicationタグ内に追加
 
 ```xml
 <meta-data android:name="APPADFORCE_APP_ID" android:value="1" />
-<meta-data android:name="APPADFORCE_SERVER_URL" android:value="012345ABC" /><meta-data android:name="APPADFORCE_CRYPTO_SALT" android:value="abcdef123" /><meta-data android:name="ANALYTICS_APP_KEY" android:value="xxxxxx" />
+<meta-data android:name="APPADFORCE_SERVER_URL" android:value="012345ABC" />
+<meta-data android:name="APPADFORCE_CRYPTO_SALT" android:value="abcdef123" />
+<meta-data android:name="ANALYTICS_APP_KEY" android:value="xxxxxx" />
 ```
 
 ### 3.2.3 インストールリファラー計測の設定
@@ -312,11 +315,28 @@ protected void onNewIntent(Intent intent) {
 # 5. LTV計測の実装
 
 
-LTV計測により、広告流入別の課金金額や入会数などを計測することができます。計測のために、任意の地点にLTV成果通信を行うコードを追加します。ソースの編集は、成果が上がった後に実行されるスクリプトに処理を記述します。例えば、会員登録やアプリ内課金後の課金計測では、登録・課金処理実行後のコールバック内にLTV計測処理を記述します。成果がアプリ内部で発生する場合、成果処理部に以下のように記述してください。・ヘッダをインクルード
-```cpp	#include "FoxUePlugin.h"
-```・成果計測処理を記述
-```cpp	FoxPlugin::sendLtv(成果地点ID);
-```> 成果地点ID(必須)：管理者より連絡します。その値を入力してください。* [sendLtvConversionの詳細](./doc/send_ltv_conversion/)
+LTV計測により、広告流入別の課金金額や入会数などを計測することができます。計測のために、任意の地点にLTV成果通信を行うコードを追加します。
+
+ソースの編集は、成果が上がった後に実行されるスクリプトに処理を記述します。例えば、会員登録やアプリ内課金後の課金計測では、登録・課金処理実行後のコールバック内にLTV計測処理を記述します。
+
+成果がアプリ内部で発生する場合、成果処理部に以下のように記述してください。
+
+・ヘッダをインクルード
+
+```cpp
+	#include "FoxUePlugin.h"
+```
+
+・成果計測処理を記述
+
+```cpp
+	FoxPlugin::sendLtv(成果地点ID);
+```
+
+> 成果地点ID(必須)：管理者より連絡します。その値を入力してください。
+
+
+* [sendLtvConversionの詳細](./doc/send_ltv_conversion/)
 
 
 # 6. アクセス解析
@@ -351,7 +371,14 @@ Androidの場合、以下の設定が必要です。
 // クラスをインポート
 import jp.appAdForce.android.AnalyticsManager;
 
-public class GameActivity extends NativeActivity {	@Override	protected void onResume() {		super.onResume();		AnalyticsManager.sendStartSession(this);	}}
+public class GameActivity extends NativeActivity {
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		AnalyticsManager.sendStartSession(this);
+	}
+}
 ```
 
 #### ＜もしJavaのActivity上でonResume()が使えない場合＞
@@ -365,26 +392,88 @@ public class GameActivity extends NativeActivity {	@Override	protected void o
 
 FoxPlugin::sendStartSession();
 ```
-> ※アプリケーションがバックグラウンドから復帰した際に、そのActivityに起動計測の実装がされていない場合など、正確なアクティブユーザー数が計測できなくなります。<br>※JavaのActivity内のonResume()とC++の両方でsendStartSession()が実行されていた場合、１ユーザーから２重にアプリ起動情報が送信されるため必ずどちらかで実装してください。[アクセス解析によるイベント計測](./doc/analytics_event/)# 7. AndroidプロジェクトでProGuardを利用する場合
-ProGuardを利用してF.O.X SDKを導入したアプリケーションを難読化する際に、警告が発生する場合があります。その際には、警告を回避するため以下の設定を追加してください。
-```-libraryjars libs/AppAdForce.jar-keep interface jp.appAdForce.** { *; }-keep class jp.appAdForce.** { *; }-keep class jp.co.dimage.** { *; }-keep class com.google.android.gms.ads.identifier.* { *; }-dontwarn jp.appAdForce.android.ane.AppAdForceContext-dontwarn jp.appAdForce.android.ane.AppAdForceExtension-dontwarn com.adobe.fre.FREContext-dontwarn com.adobe.fre.FREExtension-dontwarn com.adobe.fre.FREFunction-dontwarn com.adobe.fre.FREObject-dontwarn com.ansca.**-dontwarn com.naef.jnlua.**```※GooglePlayServiceSDKを導入されている場合、以下のページで記載されているkeep指定が記述されているかご確認ください。
-[Google Play Services導入時のProguard対応](https://developer.android.com/google/play-services/setup.html#Proguard)# 8. 疎通テストの実施マーケットへの申請までに、Force Operation Xを導入した状態で十分にテストを行い、アプリケーションの動作に問題がないことを確認してください。効果測定テストの手順については、管理者よりご連絡いたしますのでその手順に従いテストを実施してください。成果のための通信は、起動後に一度のみ行わるため、二回目以降の起動では通信が発生しません。続けて効果測定テストを行いたい場合には、アプリケーションをアンインストールし、再度インストールから行ってください。## 8.1 テストの手順
-SDKが正常に導入されていることを確認するためのテスト手順は以下の通りです。ProGuardを掛けてリリースを行う場合、必ずProGuardを掛けた状態でテストの実施をお願い致します。1. テスト用端末にテストアプリがインストールされている場合には、アンインストール2. テスト用端末の「設定」→「Safari」→「Cookieとデータを消去」によりCookieを削除
+> ※アプリケーションがバックグラウンドから復帰した際に、そのActivityに起動計測の実装がされていない場合など、正確なアクティブユーザー数が計測できなくなります。<br>
+※JavaのActivity内のonResume()とC++の両方でsendStartSession()が実行されていた場合、１ユーザーから２重にアプリ起動情報が送信されるため必ずどちらかで実装してください。
+
+
+[アクセス解析によるイベント計測](./doc/analytics_event/)
+
+# 7. AndroidプロジェクトでProGuardを利用する場合
+
+ProGuardを利用してF.O.X SDKを導入したアプリケーションを難読化する際に、警告が発生する場合があります。その際には、警告を回避するため以下の設定を追加してください。
+
+```
+-libraryjars libs/AppAdForce.jar
+-keep interface jp.appAdForce.** { *; }
+-keep class jp.appAdForce.** { *; }
+-keep class jp.co.dimage.** { *; }
+-keep class com.google.android.gms.ads.identifier.* { *; }
+-dontwarn jp.appAdForce.android.ane.AppAdForceContext
+-dontwarn jp.appAdForce.android.ane.AppAdForceExtension
+-dontwarn com.adobe.fre.FREContext
+-dontwarn com.adobe.fre.FREExtension
+-dontwarn com.adobe.fre.FREFunction
+-dontwarn com.adobe.fre.FREObject
+-dontwarn com.ansca.**
+-dontwarn com.naef.jnlua.**
+```
+
+※GooglePlayServiceSDKを導入されている場合、以下のページで記載されているkeep指定が記述されているかご確認ください。
+
+[Google Play Services導入時のProguard対応](https://developer.android.com/google/play-services/setup.html#Proguard)
+
+
+# 8. 疎通テストの実施
+
+マーケットへの申請までに、Force Operation Xを導入した状態で十分にテストを行い、アプリケーションの動作に問題がないことを確認してください。
+
+効果測定テストの手順については、管理者よりご連絡いたしますのでその手順に従いテストを実施してください。
+
+成果のための通信は、起動後に一度のみ行わるため、二回目以降の起動では通信が発生しません。続けて効果測定テストを行いたい場合には、アプリケーションをアンインストールし、再度インストールから行ってください。
+
+## 8.1 テストの手順
+
+SDKが正常に導入されていることを確認するためのテスト手順は以下の通りです。
+ProGuardを掛けてリリースを行う場合、必ずProGuardを掛けた状態でテストの実施をお願い致します。
+
+1. テスト用端末にテストアプリがインストールされている場合には、アンインストール
+2. テスト用端末の「設定」→「Safari」→「Cookieとデータを消去」によりCookieを削除
 3. 弊社より発行したテスト用URLをクリック<br>
-   ※ テスト用URLは必ずOSに設定されているデフォルトブラウザでリクエストされるようにしてください。デフォルトブラウザとは、URLをクリックした際に自動で起動するブラウザのことです。メールアプリやQRコードアプリを利用され、そのアプリ内WebViewで遷移した場合には計測できません。4. マーケットへリダイレクト<br>
-   ※ テストURLの場合には、遷移先がなくエラーダイアログが表示される場合がありますが、問題ありません。5. テスト用端末にテストアプリをインストール
+   ※ テスト用URLは必ずOSに設定されているデフォルトブラウザでリクエストされるようにしてください。
+デフォルトブラウザとは、URLをクリックした際に自動で起動するブラウザのことです。
+メールアプリやQRコードアプリを利用され、そのアプリ内WebViewで遷移した場合には計測できません。
+4. マーケットへリダイレクト<br>
+   ※ テストURLの場合には、遷移先がなくエラーダイアログが表示される場合がありますが、問題ありません。
+5. テスト用端末にテストアプリをインストール
 6. アプリを起動、ブラウザが起動<br>
-   ※ ここでブラウザが起動しない場合には、正常に設定が行われていません。設定を見直していただき、問題が見当たらない場合には弊社へご連絡ください。7. LTV地点まで画面遷移
+   ※ ここでブラウザが起動しない場合には、正常に設定が行われていません。
+設定を見直していただき、問題が見当たらない場合には弊社へご連絡ください。
+7. LTV地点まで画面遷移
 8. アプリを終了し、バックグラウンドからも削除
 9. 再度アプリを起動
 10. 弊社へ3,6,7,9の時間をお伝えください。正常に計測が行われているか確認致します。
-11. 弊社側の確認にて問題がなければテスト完了となります。# 9. 最後に必ずご確認ください（これまで発生したトラブル集）
-#### URLスキームの設定がされずリリースされたためブラウザからアプリに遷移ができない
-Cookie計測を行いブラウザを起動した場合には、URLスキームを利用してアプリケーションに遷移します。この際、独自のURLスキームが設定されている必要があります。#### URLスキームに大文字が含まれ、正常にアプリに遷移されない
-環境によって、URLスキームの大文字小文字が判別されないことにより正常にURLスキームの遷移が行えない場合があります。
-URLスキームは全て小文字で設定を行ってください。
-#### F.O.Xで確認できるインストール数の値がマーケットの数字より大きい
-F.O.Xではいくつかの方式を組み合わせて端末の重複インストール検知を行っています。重複検知が行えない設定では、同一端末で再インストールされる度にF.O.Xは新規のインストールと判定してしまいます。重複検知の精度を向上するために、以下の設定を行ってください。
+11. 弊社側の確認にて問題がなければテスト完了となります。
+
+# 9. 最後に必ずご確認ください（これまで発生したトラブル集）
+
+#### URLスキームの設定がされずリリースされたためブラウザからアプリに遷移ができない
+
+Cookie計測を行いブラウザを起動した場合には、URLスキームを利用してアプリケーションに遷移します。
+
+この際、独自のURLスキームが設定されている必要があります。
+
+
+#### URLスキームに大文字が含まれ、正常にアプリに遷移されない
+
+環境によって、URLスキームの大文字小文字が判別されないことにより正常にURLスキームの遷移が行えない場合があります。
+
+URLスキームは全て小文字で設定を行ってください。
+
+
+#### F.O.Xで確認できるインストール数の値がマーケットの数字より大きい
+
+F.O.Xではいくつかの方式を組み合わせて端末の重複インストール検知を行っています。重複検知が行えない設定では、同一端末で再インストールされる度にF.O.Xは新規のインストールと判定してしまいます。重複検知の精度を向上するために、以下の設定を行ってください。
 
 * [広告IDを利用するためのGoogle Play Services SDKの導入](./doc/google_play_services/)
-* [（オプション）外部ストレージを利用した重複排除設定](./doc/external_storage/)
+
+* [（オプション）外部ストレージを利用した重複排除設定](./doc/external_storage/)
