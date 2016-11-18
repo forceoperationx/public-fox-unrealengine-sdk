@@ -13,7 +13,7 @@ UE4Editorツールから `Settings > Project Settings > iOS > Extra Plist Data`�
 <key>CFBundleURLTypes</key><array><dict><key>CFBundleTypeRole</key><string>Editor</string><key>CFBundleURLSchemes</key><array><string>my.game</string></array></dict></array>
 ```
 ![Menu](./ios_menu.png)
-![ExtraPlistData](./ios_menu.png)
+![ExtraPlistData](./ios_extra.png)
 
 ### iniファイルを直接編集する場合
 1. `[project folder]/Config/DefaultEngine.ini`ファイルに開く。
