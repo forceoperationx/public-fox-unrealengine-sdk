@@ -4,44 +4,26 @@
 
 # iOS プロジェクトの詳細設定
 
-## **Xcodeプロジェクトの設定**
+## **カスタマイズ URL Scheme設定**
+下記のいずれの設定を行ってください。
 
-### Xcodeプロジェクトのパブリッシュ
+### UE4Editorで設定する場合
+UE4Editorツールから `Settings > Project Settings > iOS > Extra Plist Data`に下記の設定を追加してください。
+```xml
+<key>CFBundleURLTypes</key><array><dict><key>CFBundleTypeRole</key><string>Editor</string><key>CFBundleURLSchemes</key><array><string>my.game</string></array></dict></array>
+```
+![Menu](./ios_menu.png)
+![ExtraPlistData](./ios_menu.png)
 
-iOS用のプロジェクトを作成するために、次の手順でXcodeプロジェクトをパブリッシュし、Xcode上で必要な設定を行います。
+### iniファイルを直接編集する場合
+1. `[project folder]/Config/DefaultEngine.ini`ファイルに開く。
+2. `[/Script/IOSRuntimeSettings.IOSRuntimeSettings]`の設定場所を探し、なければ追加します。
+3. 下記の設定を追加する。
+```ini
+AdditionalPlistData=<key>CFBundleURLTypes</key><array><dict><key>CFBundleTypeRole</key><string>Editor</string><key>CFBundleURLSchemes</key><array><string>my.game</string></array></dict></array>
+```
 
-1. メニューの「File」>「BUild Settings…」を選択する
-2. Platformの「iOS」を選択し、「Switch Platform」を押下する
-3. 「Player Settings」を押下し、Inspectorでご自身の環境に合わせて設定を行う
-4. 	「Build」か「Build And Run」を押下し、Xcodeプロジェクトのパブリッシュを行う
-
-### Xcodeプロジェクトの編集
-
-パブリッシュされたXcodeプロジェクトを開き、編集します。
-
-* **フレームワーク設定**
-
-次のフレームワークをプロジェクトにリンクしてください。
-
-<table>
-<tr><th>フレームワーク名</th><th>Status</th></tr>
-<tr><td>AdSupport.framework</td><td>Optional</td></tr>
-<tr><td>Security.framework </td><td>Required </td></tr>
-<tr><td>SystemConfig.framework </td><td>Required </td></tr>
-</table>
-
-* **App Transport Securityについて**
-
-iOS9より提供されたNSAppTransportSecurity(以下、ATS)を有効にしている場合、Info.plistに以下の設定を行いF.O.X SDKが行う通信先のドメインをATSの例外としてください。
-
-キー | タイプ | 概要
-:---: | :---: | :---
-NSExceptionDomains|Dictionary|ATSの例外を指定するディクショナリー
-指定ドメイン文字列|Dictionary|以下２つのドメインをキーで作成してください。<br>・app-adforce.jp<br>・forceoperationx.com
-NSExceptionAllowsInsecureHTTPLoads|Boolean|YES を指定してくださいATSの例外とします。
-NSIncludesSubdomains|Boolean|YES を指定しATSの例外設定をサブドメインにも適用させます。
-
-![ATS設定](./img_ats.png)
+> ここの`my.game`は一例だけです、実際は各自のURL Schemeに変更してください。
 
 ---
 
