@@ -8,9 +8,8 @@ Force Operation X (以下F.O.X)は、スマートフォンにおける広告効�
 
 * **[1. インストール](#install_sdk)**
   * [SDKダウンロード](https://github.com/cyber-z/public-fox-unrealengine-sdk/releases)
-  * [UE4プラグインの導入方法](./doc/integration/README.md)
-   * [iOSプロジェクトの設定](./doc/integration/ios/README.md)
-   * [Androidプロジェクトの設定](./doc/integration/android/README.md)
+  * [iOSプロジェクトの設定](./doc/integration/ios/README.md)
+  * [Androidプロジェクトの設定](./doc/integration/android/README.md)
 * **[2. F.O.X SDKのアクティベーション](#activate_sdk)**
 * **[3. インストール計測の実装](#track_install)**
 	*	[インストール計測の詳細](./doc/track_install/README.md)
@@ -126,7 +125,7 @@ void FoxSample::BeginPlay()
 #### [ ブループリント ]
 
 以下の様に`TrackInstall`ノードを追加します。<br>
-Activate直後に呼び出すことが望ましいですが、別のBeginPlayで呼び出す場合は必ずアプリ起動時に実行されるよう
+Activate直後に呼び出すことが望ましいですが、別のBeginPlayで呼び出す場合は必ずアプリ起動時且つ、Activateの後に実行されるよう
 設定してください。
 
 ![TrackInstall](./res/trackInstall.png)
@@ -193,13 +192,29 @@ using namespace fox;
 
 #### [ ブループリント ]
 
-イベントが発生するタイミングでTrackEventノードと接続します。<br>
-TrackEventノードのAttrには、イベントの計測するパラメータをセットしたFoxEventAttrを指定します。
+* イベントが発生するタイミングでTrackEventノードを追加します。
+<br><br>
+![TrackEvent_Tutorial](./res/trackEvent_tutorial_0.png)
+<br><br>
+* `Attr`からノード追加メニューを開き、`変数へ昇格`を選択します。
+![TrackEvent_Tutorial](./res/trackEvent_tutorial_1.png)
+<br><br>
+* 追加した変数に各パラメータをセットします。このチュートリアルイベントの設定例として以下の値を設定しています。<br><br>
+・EventName : _tutorial_complete<br>
+・Ltv Id : 191 (管理画面で発行されるIDです)<br>
+・Buid : User_001
+<br><br>
+![TrackEvent_Tutorial](./res/trackEvent_tutorial_2.png)
+<br><br>
+
+値を動的に設定する場合は、変数への昇格は実行せず直接各パラメータに値を設定します。
 
 ![TrackEvent_Tutorial](./res/trackEvent_tutorial.png)
 
 
 #### [ C++ ]
+
+コードで実装する場合は以下のように実装します。
 
 ```cs
 #include "CYZFox.h"
@@ -208,10 +223,10 @@ TrackEventノードのAttrには、イベントの計測するパラメータを
 using namespace fox;
 ...
   const char* eventName = "_tutorial_comp";
-	uint ltvId = 成果地点ID;
-	CYZFoxEvent e = new CYZFoxEvent(eventName, ltvId);
-	e.buid = "USER_001"
-	CYZFox::trackEvent(e);
+  uint ltvId = 成果地点ID;
+  CYZFoxEvent e = new CYZFoxEvent(eventName, ltvId);
+  e.buid = "USER_001"
+  CYZFox::trackEvent(e);
 ```
 
 > 成果地点ID(必須)：管理者より連絡します。その値を入力してください。
