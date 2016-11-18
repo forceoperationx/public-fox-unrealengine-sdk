@@ -44,6 +44,5 @@ NSIncludesSubdomains|Boolean|YES を指定しATSの例外設定をサブドメ�
 ![ATS設定](./img_ats.png)
 
 ---
-[戻る](../README.md)
 
 [トップ](../../../README.md)

@@ -13,7 +13,6 @@
 ## パーミッションの設定
 
 F.O.X SDKでは下記のパーミッションを利用します。
-&lt;Manifest&gt;タグ内に次のパーミッションの設定を追加します。
 
 ```xml
 <uses-permission android:name="android.permission.INTERNET" />
@@ -86,6 +85,5 @@ F.O.X SDKはカスタムURLスキームでアプリを起動し、以下のActiv
 
 
 ---
-[戻る](../README.md)
 
 [トップ](../../../README.md)

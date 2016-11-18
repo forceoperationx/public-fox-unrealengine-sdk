@@ -73,17 +73,17 @@ F.O.X SDKのアクティベーションを行うため、アプリの起動時�
 
 * レベルブループリント(`[ブループリント] > [レベルブループリントを開く]`)を開きます。
 ![OpenLevelBlueprint](./res/open-level-blueprint.png)
-* `イベントBeginPlay`を配置します。
+* `イベント BeginPlay`を配置します。
 * 何もない箇所を右クリックして`Fox Track`のノードを検索します。
 * Fox Trackの一覧から`Activate Function`を選択し配置します。
 ![ActivateSetting](./res/activate-setting.png)
 
 |パラメータ|型|説明|
 |:---|:---:|:---|
-|IosAppId|int|管理画面で発行されるiOSアプリ用の計測用ID|
-|IosAppSalt|char|管理画面で発行されるiOS用ソルト|
-|IosAppKey|char|管理画面で発行されるiOS用アプリキー|
-|WebViewTrackingEnabledIos|bool||
+|Ios AppId|int|管理画面で発行されるiOSアプリ用の計測用ID|
+|Ios App Salt|char|管理画面で発行されるiOS用ソルト|
+|Ios App Key|char|管理画面で発行されるiOS用アプリキー|
+|Ios Web View Tracking Enabled|bool|Webブラウザを利用してイベント計測を実施する場合、`true`に設定します。|
 |AndroidAppId|int|管理画面で発行されるiOS用の計測用ID|
 |AndroidSalt|char|管理画面で発行されるAndroid用ソルト|
 |AndroidAppKey|char|管理画面で発行されるAndroid用アプリキー|
@@ -298,11 +298,7 @@ F.O.Xではいくつかの方式を組み合わせて端末の重複インスト
 
 重複検知の精度を向上するために、以下の設定を行ってください。
 
-* [広告IDを利用するためのGoogle Play Services SDKの導入](./doc/integration/android/google_play_services/README.md)
-
 * [（オプション）外部ストレージを利用した重複排除設定](/lang/ja/doc/integration/android/external_storage/README.md)
-
-* [（オプション）Android M オートバックアップ機能の利用](./doc/integration/android/auto_backup/README.md)
 
 ---
 [トップメニュー](/README.md)
