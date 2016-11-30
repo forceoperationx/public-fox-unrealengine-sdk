@@ -2,3 +2,4 @@
 
 ###LANGUAGE
 * [Japanese](./lang/ja/)
+* [Korean](./lang/ko)
