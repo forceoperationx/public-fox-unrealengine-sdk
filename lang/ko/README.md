@@ -44,7 +44,7 @@ F.O.X SDK의 애플리케이션을 도입하시면 이하의 기능을 실현합
 
 [SDK릴리스 페이지](https://github.com/cyber-z/public-fox-unrealengine-sdk/releases)
 
-다운로드하신 SDK「FOX_UE4_Plugin_<version>.zip」를 해동후 애플리케이션의 프로젝트에 임포트하여 주십시오<br>
+다운로드하신 SDK「FOX_UE4_Plugin_&lt;version&gt;.zip」를 해동후 애플리케이션의 프로젝트에 임포트하여 주십시오<br>
 프로젝트 디렉토리 직하의 `Plugins`에 해동한 SDK디렉토리를 배치합니다.
 
 ![Plugins](./res/plugin-cap.png)

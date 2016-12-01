@@ -45,15 +45,18 @@ F.O.X SDKをアプリケーションに導入することで、以下の機能�
 
 [SDKリリースページ](https://github.com/cyber-z/public-fox-unrealengine-sdk/releases)
 
-ダウンロードしたSDK「FOX_UE4_Plugin_<version>.zip」を展開し、アプリケーションのプロジェクトに組み込見ます。<br>
+ダウンロードしたSDK「FOX_UE4_Plugin_&lt;version&gt;.zip」を展開し、`Plugins`の`CYZFox`をアプリケーションのプロジェクトに組み込見ます。<br>
 プロジェクトディレクトリ直下の`Plugins`に解凍したSDKディレクトリを配置します。
 
 ![Plugins](./res/plugin-cap.png)
 
 > `Plugins`ディレクトリがない場合、作成して配置してください。
 
-PluginsディレクトリにSDKを配置すると、UnrealEditorのPlugins一覧 (`[設定] > [Plugins]`)にFOXPluginが表示されます。<br>
-`Enabled`にチェックを入れて、UnrealEditorを再起動することでプロジェクトへの導入は完了です。
+PluginsディレクトリにSDKを配置すると、UnrealEditorのPlugins一覧 ( [設定] > [Plugins] )に`CyberZ Fox`が表示されます。<br>
+導入するPluginの`Enabled`にチェックを入れて、UnrealEditorを再起動することでプロジェクトへの導入は完了です。
+
+* `FOX SDK` : SDK本体となるPluginです。必ずEnableにチェックを入れてください。
+* `FOX SDK Blueprint Library` : ブループリントでFOX SDKをコールする場合にEnableにチェックを入れてください。
 
 ![Plugins_setting](./res/plugins-setting.png)
 
