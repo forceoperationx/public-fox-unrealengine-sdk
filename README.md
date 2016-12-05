@@ -6,5 +6,5 @@
 
 ## Files
 
-  * `FoxAndroidUeExtension` : Gllue code project for F.O.X Android SDK 4.0.0
+  * `FoxAndroidUeExtension` : Glue code project for F.O.X Android SDK 4.0.0
   * `Plugins` : Plugin of UE4 project
