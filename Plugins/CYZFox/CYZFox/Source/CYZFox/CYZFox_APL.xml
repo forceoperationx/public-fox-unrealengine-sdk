@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root xmlns:android="http://schemas.android.com/apk/res/android">
+
+  <init>
+    <log text="Setting Up F.O.X SDK Libraries"/>
+  </init>
+
+  <proguardAdditions>
+    <insert>
+      ### F.O.X #################################################
+      -libraryjars libs/FOX_Android_SDK_4.0.0.jar
+      -libraryjars libs/FOX_Android_SDK_Support_UE_1.0.0.jar
+      -keepattributes *Annotation*
+      -keep class co.cyberz.** { *; }
+      -keep class com.google.android.gms.ads.identifier.* { *; }
+      -dontwarn co.cyberz.**
+      ### F.O.X #################################################
+    </insert>
+  </proguardAdditions>
+
+  <resourceCopies>
+    <log text="Copy Fox libraries"/>
+	  <copyDir src="$S(PluginDir)/../../ThirdPartyLibraries/Android/"
+					   dst="$S(BuildDir)" />
+  </resourceCopies>
+
+  <gameActivityImportAdditions>
+		<insert>
+
+		import co.cyberz.fox.Fox;
+
+		</insert>
+	</gameActivityImportAdditions>
+
+  <gameActivityClassAdditions>
+    <insert>
+    @Override
+    protected void onNewIntent(Intent intent)
+    {
+      super.onNewIntent(intent);
+      setIntent(intent);
+    }
+    </insert>
+  </gameActivityClassAdditions>
+
+  <gameActivityOnResumeAdditions>
+		<insert>
+
+		Fox.trackDeeplinkLaunch(getIntent());
+
+		</insert>
+	</gameActivityOnResumeAdditions>
+
+  <androidManifestUpdates>
+    <addElements tag="manifest">
+      <!-- <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+      <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> -->
+    </addElements>
+    <addElements tag="application">
+      <activity android:name="co.cyberz.fox.support.ue.IntentReceiverActivity">
+        <intent-filter>
+            <action android:name="android.intent.action.VIEW" />
+            <category android:name="android.intent.category.DEFAULT" />
+            <category android:name="android.intent.category.BROWSABLE" />
+            <data android:scheme="" android:host="" />
+        </intent-filter>
+      </activity>
+      <receiver android:name="co.cyberz.fox.FoxInstallReceiver" android:exported="true">
+        <intent-filter>
+            <action android:name="com.android.vending.INSTALL_REFERRER" />
+        </intent-filter>
+      </receiver>
+      <!-- Please use follow meta-data if exist multiple BroadcastReceiver classes in project.
+           Insert each packageNames to 'value' -->
+      <!-- <meta-data
+        android:name="APPADFORCE_FORWARD_RECEIVER"
+        android:value="InstallReceiver1|InstallReceiver2|..." /> -->
+    </addElements>
+  </androidManifestUpdates>
+
+</root>

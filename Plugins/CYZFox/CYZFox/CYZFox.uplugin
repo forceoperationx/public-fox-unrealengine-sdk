@@ -1,0 +1,32 @@
+{
+	"FileVersion": 1,
+	"Version": 1,
+	"VersionName": "1.0",
+	"FriendlyName" : "FOX SDK",
+	"Description" : "FOX SDK Plugin for Unreal Engine",
+	"Category" : "CyberZ Fox",
+	"CreatedBy": "CyberZ, inc",
+	"CreatedByURL" : "http ://www.cyber-z.co.jp",
+	"DocsURL": "https://github.com/cyber-z/public-fox-unrealengine-sdk",
+	"MarketplaceURL": "",
+	"SupportURL": "",
+	"EnabledByDefault": false,
+	"CanContainContent": false,
+	"IsBetaVersion": false,
+	"Installed": false,
+	"Modules":
+	[
+		{
+			"Name": "CYZFox",
+			"Type": "Runtime",
+			"LoadingPhase": "Default",
+			"WhitelistPlatforms" :
+			[
+				"IOS",
+				"ANDROID",
+				"MAC",
+				"WINDOWS"
+			]
+		}
+	]
+}
