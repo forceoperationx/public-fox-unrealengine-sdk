@@ -39,6 +39,11 @@ void CYZUEFox::trackInstall(CYZUEFoxTrackOption option) {
     foxOption.redirectURL = CYZUEFoxStringFromUTF8String(option.redirectURL);
     foxOption.buid = CYZUEFoxStringFromUTF8String(option.buid);
     foxOption.optout = option.optout;
+    if (option.onInstallComplete) {
+        foxOption.trackingCompletionHandler = ^{
+            option.onInstallComplete();
+        };
+    }
 
     [CYZFox trackInstallWithOption:foxOption];
 }

@@ -1,5 +1,7 @@
-// Copyright 1998-2016 Epic Games, Inc. All Rights Reserved.
-
+/*
+ * F.O.X UnrealEngine SDK
+ * Copyright © 2017 CyberZ, Inc. All Rights Reserved.
+ */
 namespace UnrealBuildTool.Rules
 {
 	public class CYZFoxBlueprintLibrary : ModuleRules
@@ -11,8 +13,7 @@ namespace UnrealBuildTool.Rules
 				{
 					"Core",
 					"CoreUObject",
-                    "Engine",
-					// ... add other public dependencies that you statically link with here ...
+          "Engine",
 				}
 				);
 
@@ -20,11 +21,10 @@ namespace UnrealBuildTool.Rules
 				new string[]
 				{
 					"CYZFox",
-					// ... add private dependencies that you statically link with here ...
 				}
-				);
+			);
 
-            PublicIncludePathModuleNames.Add("CYZFox");
-        }
+      PublicIncludePathModuleNames.Add("CYZFox");
+    }
 	}
 }
