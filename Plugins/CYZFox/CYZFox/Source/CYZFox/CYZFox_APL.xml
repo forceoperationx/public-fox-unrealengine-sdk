@@ -7,14 +7,14 @@
 
   <proguardAdditions>
     <insert>
-      ### F.O.X #################################################
-      -libraryjars libs/FOX_Android_SDK_4.0.0.jar
+      ### F.O.X SDK Proguard Setting #############################
+      -libraryjars libs/FOX_Android_SDK_4.1.1.jar
       -libraryjars libs/FOX_Android_SDK_Support_UE_1.0.0.jar
       -keepattributes *Annotation*
       -keep class co.cyberz.** { *; }
       -keep class com.google.android.gms.ads.identifier.* { *; }
       -dontwarn co.cyberz.**
-      ### F.O.X #################################################
+      ### F.O.X SDK Proguard Setting #############################
     </insert>
   </proguardAdditions>
 
@@ -34,19 +34,13 @@
 
   <gameActivityClassAdditions>
     <insert>
-    @Override
-    protected void onNewIntent(Intent intent)
-    {
-      super.onNewIntent(intent);
-      setIntent(intent);
-    }
     </insert>
   </gameActivityClassAdditions>
 
   <gameActivityOnResumeAdditions>
 		<insert>
 
-		Fox.trackDeeplinkLaunch(getIntent());
+		Fox.trackDeeplinkLaunch(this);
 
 		</insert>
 	</gameActivityOnResumeAdditions>
