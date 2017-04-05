@@ -1,45 +1,45 @@
-[TOP](../../../README.md)　>　**iOS プロジェクトの詳細設定**
+[TOP](../../../README.md)　>　**iOS 项目设置详情**
 
 ---
 
-# iOS プロジェクトの詳細設定
+# iOS 项目设置详情
 
-## **1.カスタマイズ URL Scheme設定**
-下記のいずれの設定を行ってください。
+## **1.设置自定义 URL Scheme**
+请进行以下任意设置。
 
-### UE4Editorで設定する場合
-UE4Editorツールから `Settings > Project Settings > iOS > Extra Plist Data`に下記の設定を追加してください。
+### UE4Editor中进行设置时
+UE4Editor工具中 `Settings > Project Settings > iOS > Extra Plist Data`中添加以下设置。
 ```xml
 <key>CFBundleURLTypes</key><array><dict><key>CFBundleTypeRole</key><string>Editor</string><key>CFBundleURLSchemes</key><array><string>my.game</string></array></dict></array>
 ```
 ![Menu](./ios_menu.png)
 ![ExtraPlistData](./ios_extra.png)
 
-### iniファイルを直接編集する場合
-1. `[project folder]/Config/DefaultEngine.ini`ファイルに開く。
-2. `[/Script/IOSRuntimeSettings.IOSRuntimeSettings]`の設定場所を探し、なければ追加します。
-3. 下記の設定を追加する。
+### 直接编辑ini文件时
+1. `[project folder]/Config/DefaultEngine.ini`文件中打开。
+2. 找出`[/Script/IOSRuntimeSettings.IOSRuntimeSettings]`的设置场所，如果没有请添加。
+3. 添加以下设置。
 ```ini
 AdditionalPlistData=<key>CFBundleURLTypes</key><array><dict><key>CFBundleTypeRole</key><string>Editor</string><key>CFBundleURLSchemes</key><array><string>my.game</string></array></dict></array>
 ```
 
-> ここの`my.game`は一例だけです、実際は各自のURL Schemeに変更してください。
+> 上述中`my.game`仅为例子，请根据各自的URL Scheme进行修改。
 
-## **2. ビルド設定**
-`CYZFox` プラグインはObjective-C Category クラス拡張機能を利用しているので、下記の様にビルド設定に`-ObjC`フラグを追加してください。
+## **2. 编译设置**
+`CYZFox` 插件使用Objective-C Category 类扩张功能，请按以下方法在编译设置中添加`-ObjC`标记。
 
-### UE4Editorで設定する場合
-UE4Editorツールから `Settings > Project Settings > iOS > Additional Linker Flags`に`-ObjC`を追加してください。
+### UE4Editor中进行设置时
+UE4Editor工具中 `Settings > Project Settings > iOS > Additional Linker Flags`中添加`-ObjC`。
 
 ![LinkerFlag](./ios_linker.png)
 
-### iniファイルを直接編集する場合
-1. `[project folder]/Config/DefaultEngine.ini`ファイルに開く。
-2. `[/Script/IOSRuntimeSettings.IOSRuntimeSettings]`の設定場所を探し、なければ追加します。
-3. 下記の設定を追加する。
+### 直接编辑ini文件时
+1. `[project folder]/Config/DefaultEngine.ini`文件中打开。
+2. `[/Script/IOSRuntimeSettings.IOSRuntimeSettings]`的设置场所，如果没有请添加。
+3. 添加以下设置。
 ```ini
 AdditionalLinkerFlags=-ObjC
 ```
 ---
 
-[トップ](../../../README.md)
+[首页](../../../README.md)

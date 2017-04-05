@@ -1,12 +1,12 @@
-[TOP](../../README.md)　>　**インストール計測の詳細**
+[TOP](../../README.md)　>　**安装计测详情**
 
 ---
 
-# インストール計測の詳細
+# 安装计测详情
 
-`trackInstall`メソッドを利用することで、インストール計測を行うことができます。<br>
-起動時に実行されるスクリプトから以下のコードが呼ばれるよう実装を行ってください。<br>
-特定のURLヘ遷移させたい場合や、アプリケーションで動的にURLを生成したい場合には、URLの文字列を設定してください。
+使用`trackInstall`方法可以进行安装计测。<br>
+启动时执行的脚本中执行呼出以下代码。<br>
+想要跳转特定的URL或APP中动态生成URL时，请设置URL字符串。
 
 ```cs
 #include "CYZFox.h"
@@ -15,14 +15,14 @@ using namespace fox;
 ...
 
   CYZUEFoxTrackOption option;
-  // URLを指定
+  // 指定URL
   option.redirectURL = "http://yourhost.com/yourpage.html";
   CYZFox::trackInstall(option);
 ```
 
-### Buid (広告主端末ID)を指定する
+### 指定编译 (广告主终端ID)
 
-`FoxTrackOption`のbuidに広告主端末IDを渡すことができます。<br>例えば、アプリ起動時にSDKがUUIDを生成し、初回起動の成果と紐付けて管理したい場合等に、利用できます。
+`FoxTrackOption`的编译中可以递交广告主终端ID。<br>例如，APP启动时SDK生成UUID，可以在关联管理首次启动成果时使用。
 
 ```cs
 #include "CYZFox.h"
@@ -32,31 +32,31 @@ using namespace fox;
 
   CYZUEFoxTrackOption option;
   option.redirectURL = "http://yourhost.com/yourpage.html";
-  // BUIDを指定
+  // 指定编译
   option.buid = "USER_001"
   CYZFox::trackInstall(option);
 ```
 
 <div id="check_track"></div>
-### インストール計測が完了したかをチェックする
+### 确认是否已完成安装计测
 
-初回起動時のCYZFox::trackInstallが行われたかの情報をboolで取得することができます。<br>
-以下メソッドを用いることでインストール計測が完了し、２回目以降の起動時に特定の処理を行うことが出来るようになります。
+首次启动时Fox.trackInstall是否运行的信息，可以通过来bool获取。<br>
+使用以下方法，可以在计测完成后第二次以上的启动时进行特定处理。
 
 ```cs
 #include "CYZFox.h"
 using namespace fox;
 
 ...
-  // 計測済みかどうか
+  // 是否计测完成
   bool isComplete = CYZFox::isConversionCompleted();
 ```
 
 
 <div id="receive_callback"></div>
-### コールバックを受け取る
+### 接收回调
 
-`CYZUEFoxTrackOption`の`onInstallComplete`（イベントハンドラ）を用いることで、F.O.X SDKの計測処理が完了したタイミングのコールバックを受け取ることが可能です。
+使用`FoxTrackOption`的`onTrackComplete`（事件处理），F.O.X SDK的计测处理完成时可以接受回调。
 
 ```cs
 #include "FoxSample.h"
@@ -69,27 +69,27 @@ void FoxSample::TrackCv()
   CYZUEFoxTrackOption option;
   option.redirectURL = "http://yourhost.com/yourpage.html";
   option.buid = "USER_001"
-  // イベントハンドラを指定
+  // 指定事件处理
   option.onInstallComplete = FOX_CALLBACK_STATIC(FoxSample::onInstallComplete, this);
   option.onTrackComplete += HandleFoxTrackComplete;
   Fox.trackInstall(option);
 }
 ...
 
-// SDKの起動計測が完了したタイミングに呼ばれます
+// SDK的启动计测完成时呼出
 void FoxSample::onInstallComplete()
 {
-  // 完了後に実行する処理を記述
+  // 记述完成后执行处理
 }
 ```
 
-> ※ コールバックを受け取る処理は現在、C++のみの機能となっておりブループリントには対応しておりません。
+> ※ 接受回调处理仅为C++的功能，不适用于蓝图。
 
-### オプトアウトの設定
+### optout设置
 
-広告会社によってターゲティング広告に利用されないことをユーザーに選択させることが可能です。<br>アプリケーションの起動時において、プライバシーポリシーや利用規約を表示するダイアログでユーザーがオプトアウトを選択した場合、効果測定の結果の通知と共に、F.O.Xが広告会社に対してそのユーザーがオプトアウトを選択したことを通知します。
+广告公司可以让用户选择是否使用targeting广告。<br>用户在APP启动时弹出的隐私权政策和使用条例对话框中选择Optout的情况时，告知效果测定结果的同时，F.O.X也会通知广告公司用户选择了Optout。
 
-オプトアウトに対応する場合は、以下の通り「`Fox.trackInstall`の引数に設定を行ってください。
+适用Optout的场合，请在以下「`Fox.trackInstall`的引数中进行设置。
 
 ```cs
 #include "CYZFox.h"
@@ -97,7 +97,7 @@ using namespace fox;
 
 ...
 
-  // ユーザーがオプトアウトを選択した場合に setOptout を有効にする
+  // 用户选择optout时，setOptout 为有效
   CYZUEFoxTrackOption option;
   option.redirectURL = "https://www.yourhost.com";
   option.buid = "USER_001";
@@ -107,7 +107,7 @@ using namespace fox;
   Fox.trackInstall(option);
 ```
 
-> ※ オプトアウトはデフォルトfalseとなっています。
+> ※ optout默认为false。
 
 ---
 [TOP](../../README.md)

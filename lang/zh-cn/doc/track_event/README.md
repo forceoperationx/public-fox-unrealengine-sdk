@@ -1,12 +1,12 @@
-[TOP](../../README.md)　>　**イベント計測の詳細**
+[TOP](../../README.md)　>　**事件计测详情**
 
 ---
 
-# イベント計測の詳細
+# 事件计测详情
 
-trackEventメソッドを利用することで、広告流入別の課金金額や入会数などを計測することができます。計測のために、任意の地点にLTV成果通信を行うコードを追加します。
+通过使用trackEvent方法，可以计测各广告渠道的付费金额和注册人数等。为进行计测，需在任意地点中添加执行LTV成果信息的代码。
 
-ソースの編集は、成果が上がった後に実行されるスクリプトに処理を記述します。例えば、会員登録やアプリ内課金後の課金計測では、登録・課金処理実行後のコールバック内にイベント計測処理を記述します。
+source编辑会在成果产生后实行的脚本中记录处理。例如，会员注册及APP内付费后的付费计测中，注册・付费实行后，在回调中记录事件计测处理。
 
 ```cs
 #include "CYZFox.h"
@@ -15,18 +15,18 @@ using namespace fox;
 
 ...
 
-CYZFoxEvent e = new CYZFoxEvent(イベント名, 成果地点ID);
+CYZFoxEvent e = new CYZFoxEvent(事件名, 成果地点ID);
 CYZFox::trackEvent(e);
 ```
 
-> イベント名(必須) : 任意のイベント名を指定することができます。
+> 事件名(必须) : 可以指定任意事件名。
 
-> 成果地点ID(必須) : 管理者より連絡します。その値を入力してください。
+> 成果地点ID(必须) : 由管理员通知。请输入该值。
 
 <div id="add_buid"></div>
-### Buid (広告主端末ID)を指定する
+### 指定编译(广告主终端ID)
 
-アプリ内部の成果に、広告主端末ID（会員IDなど）を含める事ができ、これを基準とした成果計測が行えます。LTV成果に広告主端末IDを付与したい場合は以下のように記述してください。
+APP内部的成果中，可以包含广告主终端ID（会员ID等），进行该基准上的成果计测。LTV成果中希望授予广告主终端ID时请进行以下描述。
 
 ```cs
 #include "CYZFox.h"
@@ -35,18 +35,18 @@ using namespace fox;
 
 ...
 
-	CYZFoxEvent e = new CYZFoxEvent(イベント名, 成果地点ID);
-	e.buid = "広告主端末ID";
+	CYZFoxEvent e = new CYZFoxEvent(事件名, 成果地点ID);
+	e.buid = "广告主终端ID";
 	CYZFox::trackEvent(e);
 ```
 
-> 広告主端末ID(オプション)：広告主様が管理しているユニークな識別子（会員IDなど）です。
-指定できる値は64文字以内の半角英数字です。
+> 广告主终端ID(任意)：广告主管理的独特标识符（会员ID等）。
+可以设置64字符以内半角英数字。
 
 <div id="add_params"></div>
-### 任意のパラメータを指定する
+### 指定任意参数
 
-アプリ内計測時には、パラメータをオプションとして設定する事が可能です。
+APP内计测时可以进行参数设置。
 
 ```cs
 #include "CYZFox.h"
@@ -55,13 +55,13 @@ using namespace fox;
 
 ...
 
-	CYZFoxEvent e = new CYZFoxEvent(イベント名, 成果地点ID);
-	e.addParam("パラメータ名", "値");
+	CYZFoxEvent e = new CYZFoxEvent(事件名, 成果地点ID);
+	e.addParam("参数名", "值");
 	CYZFox::trackEvent(e);
 ```
 
 <div id="purchase"></div>
-### 課金イベント実装例
+### 付费事件执行案例
 
 ```cs
 #include "CYZFox.h"
@@ -81,24 +81,24 @@ using namespace fox;
 	Fox.trackEvent(purchase);
 ```
 
-FoxEventに設定できるパラメータの仕様は下記の通りです。
+FoxEvent中可以指定的参数如下。
 
-|パラメータ|型|最大長|概要|
+|参数|型|最大長|概要|
 |:------|:------:|:------:|:------|
-|eventName|char|255|トラッキングを行うイベントを識別できる任意の名前を設定します。イベント名は自由に設定可能です。|
-|orderId|char|255|注文番号等を指定します。|
-|sku|char|255|商品コード等を指定します。|
-|itemName|char|255|商品名を指定します。|
-|price|double||商品単価を指定します。|
-|quantity|int||数量を指定します。price * quantityが売上金額として計上されます。|
-|currency|cahr||通貨コードを指定します。未指定の場合は"JPY"が指定されます。|
+|eventName|char|255|设置能够识别追踪事件的任意名称。事件名可自由设置。|
+|orderId|char|255|指定单号。|
+|sku|char|255|指定商品代码。|
+|itemName|char|255|指定商品名。|
+|price|double||指定商品单价。|
+|quantity|int||指定数量。price * quantity为收入金额。|
+|currency|cahr||指定货币代码。未指定时默认为"JPY"。|
 
-> currencyには[ISO 4217](http://ja.wikipedia.org/wiki/ISO_4217)で定義された通貨コードを指定してください。
+> currency请设置为[ISO 4217](http://ja.wikipedia.org/wiki/ISO_4217)认证的货币代码。
 
 <div id="session"></div>
-### セッションイベント
+### session事件
 
-アプリケーションが起動、もしくはバックグラウンドから復帰する際にセッション計測を行うコードを追加します。不要の場合には、本項目の実装を省略できます。
+APP启动时或从后台恢复时，添加session计测代码。不需要该项结果时，请忽略本项。
 
 ```cs
 #include "CYZFox.h"
@@ -110,12 +110,12 @@ using namespace fox;
 	CYZFox::trackSession();
 ```
 
-#### (Android) Javaによる実装
+#### 使用(Android) Java执行
 
-Androidの場合、以下のようにjavaによる実装も可能です。<br>
-アプリケーションの起動及び、バックグラウンドからの復帰を計測するために、Activityの`onResume`メソッドにコードを追加します。
+Android的场合，可以按照以下内容通过java执行。<br>
+为计测APP启动及后台恢复的数据，需在Activity中`onResume`方法中添加代码。
 
-アプリケーション起動時の起動計測（MainActivityクラスへの実装例）
+APP启动时的启动计测（MainActivity类的执行案例）
 ```java
 import co.cyberz.fox.Fox;
 
@@ -128,12 +128,12 @@ public class MainActivity extends Activity {
 		}
 }
 ```
-> ※ アプリケーションがバックグラウンドから復帰した際に、そのActivityに起動計測の実装がされていない場合など、正確なアクティブユーザー数が計測できなくなります。
+> ※ APP从后台恢复时，Activity中没有执行启动计测的话，将无法进行正确的活跃用户计测。
 
-> ※ JavaとC#の両方でtrackSession()が実行されていた場合、１ユーザーから２重にアプリ起動情報が送信されるため必ずどちらかで実装してください。
+> ※ Java和C#两者中均未执行trackSession()时，可能会导致一个用户被记录两次启动信息，请务必在其中之一执行。
 
 
 
 
 ---
-[トップ](../../README.md)
+[首页](../../README.md)

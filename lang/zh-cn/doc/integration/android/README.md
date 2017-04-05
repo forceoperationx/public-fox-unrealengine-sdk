@@ -1,18 +1,18 @@
-[TOP](../../../README.md)　>　**Android プロジェクトの詳細設定**
+[TOP](../../../README.md)　>　**Android 项目详细设置**
 
 ---
 
-# Android プロジェクトの詳細設定
+# Android 项目详细设置
 
-* [パーミッションの設定](#permission)
-* [インストールリファラ計測の設定](#install_referrer)
-* [リエンゲージメント計測の実装](#track_reengagement)
-* [その他](#others)
+* [权限设置](#permission)
+* [安装referrer计测](#install_referrer)
+* [流失唤回广告计测执行](#track_reengagement)
+* [其他](#others)
 
 <div id="permission"></div>
-## パーミッションの設定
+## 权限设置
 
-F.O.X SDKでは下記のパーミッションを利用します。
+F.O.X SDK可以使用以下三种权限。
 
 ```xml
 <uses-permission android:name="android.permission.INTERNET" />
@@ -20,19 +20,18 @@ F.O.X SDKでは下記のパーミッションを利用します。
 <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 ```
 
-パーミッション|Protection Level|必須|概要
+权限|Protection Level|必须|概要
 :---|:---:|:---:|:---
-INTERNET|Normal|必須|F.O.X SDKが通信を行うために必要となります。
-READ_EXTERNAL_STORAGE|Dangerous|任意|ストレージを利用した重複検知精度を向上させる場合に必要となります。(※1)
-WRITE_EXTERNAL_STORAGE|Dangerous|任意|ストレージを利用した重複検知精度を向上させる場合に必要となります。(※1)
+INTERNET|Normal|必须|F.O.X SDK是进行通信的必要条件。
+READ_EXTERNAL_STORAGE|Dangerous|任意|必须使用储存来优化排除重复功能。(※1)
+WRITE_EXTERNAL_STORAGE|Dangerous|任意|必须使用储存来优化排除重复功能。(※1)
 
-> ※1 Android MよりProtectionLevelが`dangerous`に指定されているパーミッションを必要とする機能を利用するには、ユーザーの許可が必要になります。詳細は[外部ストレージを利用した重複排除設定](./external_storage/README.md)をご確認ください。
+> ※1 从Android M版本开始ProtectionLevel被指定为`dangerous`并需要权限的功能时，需要用户许可。具体请参考[利用外部储存优化排除重复设置](./external_storage/README.md)
 
 <div id="install_referrer"></div>
-## インストールリファラ計測の設定
-
-インストールリファラ計測を行うための設定は`CYZFox/Source/CYZFox/CYZFox_APL.xml`にて<br>
-以下の設定がAndroidManifest.xmlに追加されるよう記述されています。
+## 安装referrer计测设置
+安装referrer计测设置详见`CYZFox/Source/CYZFox/CYZFox_APL.xml`<br>
+将以下设置添加至AndroidManifest.xml。
 
 ```xml
 <receiver android:name="co.cyberz.fox.FoxInstallReceiver" android:exported="true">
@@ -42,29 +41,30 @@ WRITE_EXTERNAL_STORAGE|Dangerous|任意|ストレージを利用した重複検�
 </receiver>
 ```
 
-既に"com.android.vending.INSTALL_REFERRER"に対するレシーバークラスが定義されている場合には、下記の複数receiverを共存させるための設定（`CYZFox_APL.xml`にでコメントアウトされている）を有効にしてください。<br>
-呼び出したいreceiverクラスのパッケージを指定します。
+"com.android.vending.INSTALL_REFERRER"对应的receiver类已被定义时，请将下面使多个INSTALL_REFERRER RECEIVER共存的设置（`CYZFox_APL.xml`中已注释）设为有效。
+
+指定想要呼出的receiver类package。
 
 ```xml
-<!-- F.O.X SDKから呼び出したい他のレシーバークラス情報をmeta-dataとして記述します -->
+<!-- 用F.O.X SDK呼出其他receiver类时信息记录为meta-data -->
 <meta-data
 		android:name="APPADFORCE_FORWARD_RECEIVER"
 		android:value="com.example.InstallReceiver1|com.example.InstallReceiver2|com.example.InstallReceiver3" />
 ```
 
-> ※ `APPADFORCE_FORWARD_RECEIVER`に指定するクラスはパッケージ付きで指定してください。また、`|`(パイプ)で区切ることで複数のクラスを指定することが可能です。
+> ※ `APPADFORCE_FORWARD_RECEIVER`中指定的类请附上package。可以用`|`(竖线)隔开多个类。
 
-> ※ Proguardを利用する場合、`APPADFORCE_FORWARD_RECEIVER`に指定するクラスは-keep指定でクラス名が変更されないようにしてください。<br>
-Proguardの対象となりますとF.O.X SDKがクラスを探せなくなり正常に動作しませんのでご注意ください。
+> ※ 使用Proguard时，`APPADFORCE_FORWARD_RECEIVER`中的类指定为-keep且不要更改类名称。<br>
+请注意，如果成为Proguard的对象，F.O.X SDK将无法正常搜索类。
 
 
 <div id="track_reengagement"></div>
-## リエンゲージメント計測の実装
+## 流失唤回广告计测执行
 
-F.O.X SDKはカスタムURLスキームでアプリを起動し、以下のActivityをコールすることでリエンゲージメント計測を行います。<br>
-リエンゲージメントを実施する場合には`CYZFox/Source/CYZFox/CYZFox_APL.xml`に記述されている以下の設定の<br>
-`android:scheme`と`android:host`を設定します。<br>
-カスタムURLスキーム(scheme://host)を弊社管理者までご連絡ください。
+F.O.X SDK使用自定义URL SCHEME启动APP，呼出以下Activity来进行流失唤回广告计测。<br>
+实施流失唤回广告计测时`CYZFox/Source/CYZFox/CYZFox_APL.xml`中记述的以下设置<br>
+设置`android:scheme`和`android:host`。<br>
+自定义URL SCHEME(scheme://host)请告知本公司管理员。
 
 ```xml
 <activity android:name="co.cyberz.fox.support.ue.IntentReceiverActivity">
@@ -72,18 +72,18 @@ F.O.X SDKはカスタムURLスキームでアプリを起動し、以下のActiv
       <action android:name="android.intent.action.VIEW" />
       <category android:name="android.intent.category.DEFAULT" />
       <category android:name="android.intent.category.BROWSABLE" />
-      <data android:scheme="スキームを設定してください" android:host="必要であればホストを設定します" />
+      <data android:scheme="请设置SCHEME" android:host="必要时请设置host" />
   </intent-filter>
 </activity>
 ```
 
 
 <div id="others"></div>
-## その他
+## 其他
 
-* [（オプション）外部ストレージを利用した重複排除設定](./external_storage/README.md)
+* [任意）使用外部储存进行重复排查设置](./external_storage/README.md)
 
 
 ---
 
-[トップ](../../../README.md)
+[首页](../../../README.md)
