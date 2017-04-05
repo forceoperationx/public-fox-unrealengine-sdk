@@ -1,102 +1,103 @@
-# Force Operation Xとは
+# 什么是Force Operation X
 
-Force Operation X (以下F.O.X)は、スマートフォンにおける広告効果最適化のためのトータルソリューションプラットフォームです。アプリケーションのダウンロード、ウェブ上でのユーザーアクションの計測はもちろん、スマートフォンユーザーの行動特性に基づいた独自の効果計測基準の元、企業のプロモーションにおける費用対効果を最大化することができます。
+Force Operation X (下面简称F.O.X)是一款基于智能手机的，用来最大改善广告效果的综合解决方案平台。除了对APP下载量和网络用户操作的基本计测外，还能基于手机用户行为特性采用独自效果计测基準，实现了企业宣传推广时费用与效果比的最大改善。
 
-本ドキュメントでは、スマートフォンアプリケーションにおける広告効果最大化のためのF.O.X SDK導入手順について説明します。
+在这个文档里，详细讲解了基于智能手机平台优化广告效果的F.O.X SDK的导入步骤。
 
-## 目次
+## 目录
 
-* **[1. インストール](#install_sdk)**
-  * [SDKダウンロード](https://github.com/cyber-z/public-fox-unrealengine-sdk/releases)
-  * [iOSプロジェクトの設定](./doc/integration/ios/README.md)
-  * [Androidプロジェクトの設定](./doc/integration/android/README.md)
-* **[2. F.O.X SDKのアクティベーション](#activate_sdk)**
-* **[3. インストール計測の実装](#track_install)**
-	*	[インストール計測の詳細](./doc/track_install/README.md)
-* **[4. アプリ内イベントの計測](#track_event)**
-	* [セッション(起動)イベントの計測](#track_event)
-	* [その他アプリ内イベントの計測](#track_other_event)
-	* [イベント計測の詳細](./doc/track_event/README.md)
-* **[5. 最後に必ずご確認ください](#trouble_shooting)**
+* **[1. 导入](#install_sdk)**
+  * [SDK下载](https://github.com/cyber-z/public-fox-unrealengine-sdk/releases)
+  * [iOS项目设置](./doc/integration/ios/README.md)
+  * [Android项目设置](./doc/integration/android/README.md)
+* **[2. F.O.X SDK激活](#activate_sdk)**
+* **[3. Install计测执行](#track_install)**
+	*	[Install计测详细](./doc/track_install/README.md)
+* **[4. APP内事件计测](#track_event)**
+	* [session(启动)事件计测](#track_event)
+	* [其他APP内事件计测](#track_other_event)
+	* [事件计测详细](./doc/track_event/README.md)
+* **[5. 最后的注意事项](#trouble_shooting)**
 
 ---
 
-## F.O.X SDKとは
+## 什么是F.O.X SDK
 
-F.O.X SDKをアプリケーションに導入することで、以下の機能を実現します。
+将F.O.X SDK导入APP之后，能够实现以下功能。
 
-* **インストール計測**
+* **Install计测**
 
-広告流入別にインストール数を計測することができます。
+能够计测不同广告带来的安装数。
 
-* **LTV計測**
+* **LTV计测**
 
-流入元広告別にLife Time Valueを計測します。主な成果地点としては、会員登録、チュートリアル突破、課金などがあります。各広告別に登録率、課金率や課金額などを計測することができます。
+可以计测不同广告来源的Life Time Value。主要的成果地点为会员注册、新手引导完成、付费等。能够分别监测各广告的登录率、付费率以及付费金额。
 
-* **アクセス解析**
+* **流量分析**
 
-自然流入と広告流入のインストール比較。アプリケーションの起動数やユニークユーザー数(DAU/MAU)。継続率等を計測することができます。
+比较自然流入和广告流入带来的安装数。能够计测App的启动次数和唯一用户数(DAU/MAU)、留存率等。
 
 
 <div id="install_sdk"></div>
-## 1. インストール
 
-以下のページより最新のSDKをダウンロードしてください。
+## 1. 导入
 
-[SDKリリースページ](https://github.com/cyber-z/public-fox-unrealengine-sdk/releases)
+请从以下页面中下载最新安定版(Latest release)SDK。
 
-ダウンロードしたSDK「FOX_UE4_Plugin_&lt;version&gt;.zip」を展開し、`Plugins`の`CYZFox`をアプリケーションのプロジェクトに組み込見ます。<br>
-プロジェクトディレクトリ直下の`Plugins`に解凍したSDKディレクトリを配置します。
+[SDK发行页面](https://github.com/cyber-z/public-fox-unrealengine-sdk/releases)
+
+下载并展开SDK「FOX_UE4_Plugin_&lt;version&gt;.zip」，将`Plugins`的`CYZFox`安装至APP项目中。<br>
+在项目路径下的`Plugins`中放置已解压的SDK目录。
 
 ![Plugins](./res/plugin-cap.png)
 
-> `Plugins`ディレクトリがない場合、作成して配置してください。
+> 没有`Plugins`目录时，请新建目录。
 
-PluginsディレクトリにSDKを配置すると、UnrealEditorのPlugins一覧 ( [設定] > [Plugins] )に`CyberZ Fox`が表示されます。<br>
-導入するPluginの`Enabled`にチェックを入れて、UnrealEditorを再起動することでプロジェクトへの導入は完了です。
+插件目录中放置SDK后，UnrealEditor的Plugins一览 ( [设置] > [Plugins] )中将会显示`CyberZ Fox`。<br>
+在导入插件的`Enabled`做勾选，重新启动UnrealEditor后，导入项目完成。。
 
-* `FOX SDK` : SDK本体となるPluginです。必ずEnableにチェックを入れてください。
-* `FOX SDK Blueprint Library` : ブループリントでFOX SDKをコールする場合にEnableにチェックを入れてください。
+* `FOX SDK` : SDK主体插件。请务必在Enabled中勾选。
+* `FOX SDK Blueprint Library` : 在蓝图中调用FOX SDK时，请在Enable中勾选。
 
 ![Plugins_setting](./res/plugins-setting.png)
 
 
-### 各OS毎の設定
+### 根据OS设置
 
-* [iOSプロジェクトの設定](./doc/integration/ios/README.md)
-* [Androidプロジェクトの設定](./doc/integration/android/README.md)
+* [iOS项目设置](./doc/integration/ios/README.md)
+* [Android项目设置](./doc/integration/android/README.md)
 
 <div id="activate_sdk"></div>
-## 2. F.O.X SDKのアクティベーション
+## 2. F.O.X SDK激活
 
-F.O.X SDKのアクティベーションを行うため、アプリの起動時点に以下の実装を行います。<br>
-実装方法にはブループリントとC++の２通りで提供しています。
+为激活F.O.X SDK，需在APP启动时执行以下代码。<br>
+执行方法分为蓝图和C++两种。
 
-#### [ ブループリント ]
+#### [ 蓝图]
 
-* レベルブループリント(`[ブループリント] > [レベルブループリントを開く]`)を開きます。
+* 打开关卡蓝图(`[蓝图] > [打开关卡蓝图]`)。
 ![OpenLevelBlueprint](./res/open-level-blueprint.png)
-* `イベント BeginPlay`を配置します。
-* 何もない箇所を右クリックして`Fox Track`のノードを検索します。
-* Fox Trackの一覧から`Activate Function`を選択し配置します。
+* 配置事件`BeginPlay`。
+* 在空白处右键，搜索`Fox Track`的节点。
+* Fox Track一览中选择并`Activate Function`去做配置。
 ![ActivateSetting](./res/activate-setting.png)
 
-|パラメータ|型|説明|
+|参数|型|说明|
 |:---|:---:|:---|
-|Ios AppId|int|管理画面で発行されるiOSアプリ用の計測用ID|
-|Ios App Salt|char|管理画面で発行されるiOS用ソルト|
-|Ios App Key|char|管理画面で発行されるiOS用アプリキー|
-|Ios Web View Tracking Enabled|bool|Webブラウザを利用してイベント計測を実施する場合、`true`に設定します。|
-|AndroidAppId|int|管理画面で発行されるiOS用の計測用ID|
-|AndroidSalt|char|管理画面で発行されるAndroid用ソルト|
-|AndroidAppKey|char|管理画面で発行されるAndroid用アプリキー|
-|DebugMode|bool|デバッグ用ログ出力有効フラグ<br>デフォルト : false|
+|Ios AppId|int|管理画面中发行的iOS版计测使用的APP ID|
+|Ios App Salt|char|管理画面中发行的iOS Salt|
+|Ios App Key|char|管理画面中发行的iOS APP key|
+|Ios Web View Tracking Enabled|bool|使用Web浏览器进行事件计测时，设为`true`。|
+|AndroidAppId|int|管理画面中发行的Android版计测使用的ID|
+|AndroidSalt|char|管理画面中发行的Android Salt|
+|AndroidAppKey|char|管理画面中发行的Android APP key|
+|DebugMode|bool|调试日志输出有效标记<br>默认:false|
 
 
 #### **[ C++ ]**
 
-CYZFox.hをインクルードし、アプリ起動時に必ず呼ばれるBeginPlayメソッド内で<br>
-CYZUEFoxConfigを設定しactivateを実行します。
+安装CYZFox.h，APP启动时调用的BeginPlay方法中<br>
+设置CYZUEFoxConfig，执行activate。
 
 ```cpp
 #include "CYZFox.h"
@@ -106,12 +107,12 @@ using namespace fox;
 void FoxSample::BeginPlay()
 {
   CYZUEFoxConfig config;
-  config.ios_appId = 発行されたiOSアプリID;
-  config.ios_salt = "発行されたiOSアプリのAPP_SALT";
-  config.ios_appKey = "発行されたiOSアプリのAPP_KEY";
-  config.android_appId = 発行されたAndroidアプリID;
-  config.android_salt = "発行されたAndroidアプリのAPP_SALT";
-  config.android_appKey = "発行されたAndroidアプリのAPP_KEY";
+  config.ios_appId = 发行的iOS APP ID;
+  config.ios_salt = "发行的iOS APP_SALT";
+  config.ios_appKey = "发行的iOS APP_KEY";
+  config.android_appId = 发行的Android APP ID;
+  config.android_salt = "发行的Android APP_SALT";
+  config.android_appKey = "发行的Android APP_KEY";
   config.debugMode = true;
   CYZFox::activate(config);
 }
@@ -119,25 +120,25 @@ void FoxSample::BeginPlay()
 
 
 <div id="track_install"></div>
-## 3. インストール計測の実装
 
-初回起動のインストール計測を実装することで、広告の効果測定を行うことができます。
+## 3. 执行Install计测
 
-### インストール計測の実装
+通过在首次启动APP时进行Install计测，可以测定广告流入效果。
 
-#### [ ブループリント ]
+### 执行Install计测
 
-以下の様に`TrackInstall`ノードを追加します。<br>
-Activate直後に呼び出すことが望ましいですが、別のBeginPlayで呼び出す場合は必ずアプリ起動時且つ、Activateの後に実行されるよう
-設定してください。
+#### [ 蓝图 ]
+
+按下列所示添加`TrackInstall`节点。<br>
+Activate之后立即调用最佳，其他BeginPlay中调用时，请务必设置为启动APP时且在Activate后执行。
 
 ![TrackInstall](./res/trackInstall.png)
 
-> ※ TrackInstallは必ずActivateの後に呼ばれるよう設定してください。Activateよりも前に実行した場合、必須設定情報をロードしていないため計測を行うことができません。
+> ※ TrackInstall请务必设置为在Activate后执行。在Activate前执行时，会因为所需信息未加载而导致计测失败。
 
 #### [ C++ ]
 
-インストール計測を行うには、BeginPlayで`CYZFox::trackInstall`をコールします。
+进行Install计测时，在BeginPlay中调用`CYZFox::trackInstall`。
 
 ```cpp
 #include "CYZFox.h"
@@ -150,25 +151,27 @@ void FoxSample::BeginPlay()
 }
 ```
 
-> ※ trackInstallは必ずactivateの後に呼ばれるよう設定してください。activateよりも前に実行した場合、必須設定情報をロードしていないため計測を行うことができません。
+> ※ trackInstall请务必设置为在Activate后执行。在Activate前执行时，会因为所需信息未加载而导致计测失败。
 
-*	[インストール計測の詳細](./doc/track_install/README.md)
+*	[Install计测详细](./doc/track_install/README.md)
 
 <div id="track_event"></div>
-## 4. アプリ内イベントの計測
 
-起動セッション、会員登録、チュートリアル突破、課金など任意の成果地点にイベント計測を実装することで、流入元広告のLTVや継続率を測定することができます。それらの計測が不要の場合には、各項目の実装を省略できます。
+## 4. APP内事件计测
+
+启动session、会员注册、新手引导突破、付费等任意成果地点中进行事件计测，可以计测广告渠道的LTV和留存率，如不需要以上结果，可以略过。
 
 <div id="track_session"></div>
-### セッション(起動)イベントの計測
 
-自然流入と広告流入のインストール数比較、アプリケーションの起動数やユニークユーザー数(DAU/MAU)、継続率等を計測することができます。アクセス解析が不要の場合には、本項目の実装を省略できます。
+### session（启动）事件计测
+
+可以计测自然流入和广告流入的安装数对比、APP启动次数和唯一用户人数（DAU/MAU)、留存率等。如不需要流量分析，可以忽略本项。
 <br>
-アプリケーションが起動、もしくはバックグラウンドから復帰する際にセッション計測を行うコードを追加します。不要の場合には、本項目の実装を省略できます。
+APP启动时或从后台恢复时添加session计测代码。无需该计测时，可以忽略本项。
 
-#### [ ブループリント ]
+#### [ 蓝图 ]
 
-TrackSessionノードを追加し呼び出します。
+添加TrackSession节点并调用。
 
 ![TrackSession](./res/trackSession.png)
 
@@ -183,41 +186,42 @@ using namespace fox;
 ```
 
 <div id="track_other_event"></div>
-### その他アプリ内イベントの計測
 
-会員登録、チュートリアル突破、課金など任意の成果地点にイベント計測を実装することで、流入元広告のLTVを測定することができます。<br>
-イベント計測が不要の場合には、本項目の実装を省略できます。<br>
-成果がアプリ内部で発生する場合、ブループリントまたはC++で成果処理部に以下の例のように実行してください。<br>
+### 其他APP内事件计测
 
-イベント計測にはCYZFoxEvent.hに計測対象となるイベントの各パラメータを格納し、CYZFox::trackEventの引数として計測します。
+在会员注册，新手引导完成，付费等任意成果地点执行事件计测，能够测定广告流入源的LTV。<br>
+无需事件计测时，可以忽略本项。<br>
+成果在APP内部产生的情况，请在蓝图或C++的成果处理部分中进行以下描述。<br>
 
-#### **[チュートリアルイベントの計測例]**
+事件计测时，CYZFoxEvent.h放置了计测对象的事件参数，作为CYZFox::trackEvent的参数进行计测。
 
-#### [ ブループリント ]
+#### **[新手引导事件计测案例]**
 
-* イベントが発生するタイミングでTrackEventノードを追加します。
+#### [ 蓝图 ]
+
+* 事件产生时添加TrackEvent节点。
 <br><br>
 ![TrackEvent_Tutorial](./res/trackEvent_tutorial_0.png)
 <br><br>
-* `Attr`からノード追加メニューを開き、`変数へ昇格`を選択します。
+* `Attr`中打开节点添加菜单，选择`升级到变量`。
 ![TrackEvent_Tutorial](./res/trackEvent_tutorial_1.png)
 <br><br>
-* 追加した変数に各パラメータをセットします。このチュートリアルイベントの設定例として以下の値を設定しています。<br><br>
+* 在添加的变量中设置各参数。以下数值为新手引导事件的设置案例。<br><br>
 ・EventName : _tutorial_complete<br>
-・Ltv Id : 191 (管理画面で発行されるIDです)<br>
+・Ltv Id : 191 (管理画面中发行的ID)<br>
 ・Buid : User_001
 <br><br>
 ![TrackEvent_Tutorial](./res/trackEvent_tutorial_2.png)
 <br><br>
 
-値を動的に設定する場合は、変数への昇格は実行せず直接各パラメータに値を設定します。
+数值为动态时，不进行升级变量，直接在各参数中设置数值。
 
 ![TrackEvent_Tutorial](./res/trackEvent_tutorial.png)
 
 
 #### [ C++ ]
 
-コードで実装する場合は以下のように実装します。
+按以下方法在代码中执行。
 
 ```cs
 #include "CYZFox.h"
@@ -232,19 +236,19 @@ using namespace fox;
   CYZFox::trackEvent(e);
 ```
 
-> 成果地点ID(必須)：管理者より連絡します。その値を入力してください。
+> 成果地点ID(必须)：请输入管理者告知的值。
 
-> LTV計測を行うためには、各成果地点を識別する`成果地点ID`を指定する必要があります。FoxEventのコンストラクタの第二引数に発行されたIDを指定してください。
+> 进行事件计测时，需指定识别成果地点的`成果地点ID`。FoxEvent构造函数的第二参数中请指定发行的ID。。
 
-#### **[課金イベントの計測例]**
+#### **[付费事件计测案例]**
 
-#### [ ブループリント ]
+#### [ 蓝图 ]
 
 ![TrackEvent_Purchase](./res/trackEvent_purchase.png)
 
 #### [ C++ ]
 
-課金計測を行う場合には、課金が完了した箇所で以下のように課金額を指定してください。
+进行付费计测时，请在付费完成的位置指定付费金额。
 
 ```cs
 using Cyz;
@@ -262,46 +266,46 @@ using Cyz;
 	CYZFox::trackEvent(purchase);
 ```
 
-> currencyの指定には[ISO 4217](http://ja.wikipedia.org/wiki/ISO_4217)で定義された通過コードを指定してください。
+> currency中请指定[ISO 4217](http://ja.wikipedia.org/wiki/ISO_4217)中定义的货币代码。
 
-* [イベント計測の詳細](./doc/track_event/README.md)
+* [事件计测详细](./doc/track_event/README.md)
 
 <div id="trouble_shooting"></div>
-## 5. 最後に必ずご確認ください（これまで発生したトラブル集）
 
-### 5.1. URLスキームの設定がされずリリースされたためブラウザからアプリに遷移ができない
+## 5. 最后需确认内容（常见问题集）
 
-Cookie計測を行うために外部ブラウザを起動した後に、元の画面に戻すためにはURLスキームを利用してアプリケーションに遷移させる必要があります。この際、独自のURLスキームが設定されている必要があり、URLスキームを設定せずにリリースした場合にはこのような遷移を行うことができなくなります。
+### 5.1. 未设置URL SCHEME 进行发布时无法从浏览器跳转至APP
 
-### 5.2. URLスキームに大文字や記号が含まれ、正常にアプリに遷移されない
+进行Cookie计测时启动浏览器以后，必须使用URL scheme跳转回到APP画面。
+此时需要设置URL scheme，未设置scheme就上线发布的话会导致无法正常迁移。
 
-環境によって、URLスキームの大文字小文字が判別されないことにより正常にURLスキームの遷移が行えない場合があります。URLスキームは全て小文字の英数字で設定を行ってください。
+### 5.2. URL SCHEME中含有大写字母时，无法正常跳转APP。
 
+根据运行环境，会出现因为URL SCHEME 的大小写字母不能判定而导致URL SCHEME 无法正常迁移的情况。
+请将URL SCHEME 全部设置为小写英文或数字或小数点。
 
-### 5.3. URLスキームの設定が他社製アプリと同一でブラウザからそちらのアプリが起動してしまう
+### 5.3. URL scheme设置与其他公司APP相同时，浏览器会跳转其他APP
 
-iOSにおいて、複数のアプリに同一のURLスキームが設定されていた場合に、どのアプリが起動するかは不定です。確実に特定のアプリを起動することができなくなるため、URLスキームは他社製アプリとはユニークになるようある程度の複雑性のあるものを設定してください。
+iOS中，多个APP设置为同一个URL scheme时，会随机启动APP。由于可能导致无法启动指定的APP，请将URL scheme区别与其他APP来设定。
 
-### 5.4. 短時間で大量のユーザー獲得を行うプロモーションを実施したら正常に計測がされなかった
+### 5.4. 进行短时间内获取大量用户的推广时无法正确计测
 
-iOSには、アプリ起動時に一定時間以上メインスレッドがブロックされるとアプリケーションを強制終了する仕様があります。起動時の初期化処理など、メインスレッド上でサーバーへの同期通信を行わないようにご注意ください。リワード広告などの大量のユーザーを短時間で獲得した結果、サーバーへのアクセスが集中し、通信のレスポンスが非常に悪くなることでアプリケーションの起動に時間がかかり、起動時に強制終了され正常に広告成果が計測できなくなった事例がございます。
+iOS中，APP启动时超过一定时间主线程被阻止运行时，会强制关闭APP。请注意不要让启动时的初始化处理在主线程上与服务器同时进行通讯。短时间内获得大量用户的激励广告等会因为集中访问服务器，通讯回复较差而导致APP启动时间延长或强制关闭等情况，从而导致无法正确计测广告结果。
 
-以下の手順で、こうした状況をテストすることができますので、以下の設定でアプリケーションが正常に起動するかをご確認ください。
+按照以下步骤可以进行以上情况的测试，请进行以下设置，确认APP是否正常启动。
 
-`iOS「設定」→「デベロッパー」→「NETWORK LINK CONDITIONER」`
+`iOS「设置」→「属性」→「NETWORK LINK CONDITIONER」`
 
-* 「Enable」をオン
-* 「Very Bad Network」をチェック
+* 「Enable」设置为on
+*  勾选「Very Bad Network」
 
+### 5.5. F.O.X中安装数的值会大于Google Play Developer Console的数值
 
-### 5.5. F.O.Xで確認できるインストール数の値がGoogle Play Developer Consoleの数字より大きい
+F.O.X结合多种方式来进行终端重复安装的检查。 当设置无法进行检查重复时，同一终端的再次安装可能会被F.O.X判定为新的安装。
 
-F.O.Xではいくつかの方式を組み合わせて端末の重複インストール検知を行っています。
-重複検知が行えない設定では、同一端末でも再インストールされる度にF.O.Xは新規のインストールと判定してしまいます。
+为提高排查重复的精度，请进行下面的设置。
 
-重複検知の精度を向上するために、以下の設定を行ってください。
-
-* [（オプション）外部ストレージを利用した重複排除設定](/lang/ja/doc/integration/android/external_storage/README.md)
+* [（任意）利用外部储存优化重复排除](/lang/ja/doc/integration/android/external_storage/README.md)
 
 ---
-[トップメニュー](/README.md)
+[Top](/README.md)
