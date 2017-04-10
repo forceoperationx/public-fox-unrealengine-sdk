@@ -1,8 +1,8 @@
-[TOP](../../../README.md)　>　**iOS 项目设置详情**
+[TOP](../../../README.md)　>　**iOS 项目设置详细**
 
 ---
 
-# iOS 项目设置详情
+# iOS 项目设置详细
 
 ## **1.设置自定义 URL Scheme**
 请进行以下任意设置。
@@ -42,4 +42,4 @@ AdditionalLinkerFlags=-ObjC
 ```
 ---
 
-[首页](../../../README.md)
+[Top](../../../README.md)
