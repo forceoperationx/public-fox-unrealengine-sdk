@@ -1,5 +1,5 @@
 # Force Opetaion X UnrealEngine SDK Integration Guide
 
-###LANGUAGE
+### LANGUAGE
 * [Japanese](./lang/ja/)
 * [Korean](./lang/ko)
